@@ -1,0 +1,34 @@
+{
+  "name": "troven-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.10",
+    "@nomicfoundation/hardhat-ignition": "^3.1.4",
+    "@nomicfoundation/hardhat-ignition-ethers": "^3.1.4",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.4",
+    "@nomicfoundation/hardhat-verify": "^3.0.16",
+    "@types/chai": "^5.2.3",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.19.17",
+    "chai": "^6.2.2",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.4.4",
+    "mocha": "^11.7.5",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1"
+  },
+  "type": "module"
+}

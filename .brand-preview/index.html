@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Troven · Palette Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        color-scheme: light dark;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system,
+          BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f4f6fb;
+        color: #0b0d12;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      body.theme-dark {
+        background: #020409;
+        color: #f4f6ff;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: clamp(32px, 4vw, 48px);
+      }
+
+      header p {
+        margin: 0;
+        font-size: 18px;
+        color: rgba(11, 13, 18, 0.8);
+      }
+
+      body.theme-dark header p {
+        color: rgba(244, 246, 255, 0.72);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .controls button {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        background: #101725;
+        color: #f4f6ff;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+
+      body.theme-light .controls button {
+        background: #ffffff;
+        color: #0b0d12;
+        box-shadow: inset 0 0 0 1px rgba(12, 17, 32, 0.08);
+      }
+
+      .palettes {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .palette {
+        border-radius: 28px;
+        padding: 32px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--fg);
+        box-shadow: 0 40px 60px -45px rgba(4, 6, 12, 0.85);
+        display: grid;
+        gap: 24px;
+      }
+
+      .palette-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .palette-header h2 {
+        margin: 4px 0 0;
+        font-size: 26px;
+      }
+
+      .palette-header p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 540px;
+      }
+
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+      }
+
+      .swatch {
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #fff;
+        font-weight: 600;
+        gap: 8px;
+        min-height: 96px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .swatch span {
+        font-size: 13px;
+        opacity: 0.9;
+      }
+
+      .wallet {
+        border-radius: 24px;
+        padding: 24px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        color: var(--fg);
+      }
+
+      .wallet-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .wallet-header strong {
+        font-size: clamp(32px, 4vw, 44px);
+      }
+
+      .badge {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        font-size: 13px;
+        font-weight: 600;
+        align-self: flex-start;
+      }
+
+      .wallet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .stat-card {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--panel) 92%, var(--accent-soft));
+      }
+
+      .stat-card p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 22px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .actions button {
+        border-radius: 14px;
+        padding: 12px 20px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--fg);
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .actions button.primary {
+        background: var(--accent);
+        color: var(--fg-accent);
+        border-color: var(--accent);
+        box-shadow: 0 12px 30px -18px var(--accent);
+      }
+
+      .actions button.secondary {
+        background: var(--panel);
+      }
+
+      .actions button.ghost {
+        background: transparent;
+      }
+
+      .actions button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 768px) {
+        .palette {
+          padding: 24px;
+        }
+
+        .wallet {
+          padding: 20px;
+        }
+      }
+
+      /* Palette tokens */
+      body.theme-light .palette.basalt {
+        --bg: #eef2f8;
+        --fg: #0b1220;
+        --panel: #ffffff;
+        --border: #d4ddea;
+        --muted: #4b576f;
+        --accent: #1ed9b0;
+        --accent-soft: #cdf9ef;
+        --accent-text: #06443c;
+        --fg-accent: #052b28;
+      }
+
+      body.theme-dark .palette.basalt {
+        --bg: #05070f;
+        --fg: #f2fbff;
+        --panel: #0b1220;
+        --border: #1e2b40;
+        --muted: #8ea2c4;
+        --accent: #36f8c5;
+        --accent-soft: #103a2f;
+        --accent-text: #59ffe0;
+        --fg-accent: #041511;
+      }
+
+      body.theme-light .palette.ledger {
+        --bg: #f8f2eb;
+        --fg: #1c1309;
+        --panel: #fffaf3;
+        --border: #e1d3c2;
+        --muted: #7c6752;
+        --accent: #ff9b40;
+        --accent-soft: #ffe1c9;
+        --accent-text: #512400;
+        --fg-accent: #2b1200;
+      }
+
+      body.theme-dark .palette.ledger {
+        --bg: #1a120c;
+        --fg: #fff1e1;
+        --panel: #27170a;
+        --border: #3a2412;
+        --muted: #c7a78f;
+        --accent: #ffb767;
+        --accent-soft: #4b2a16;
+        --accent-text: #ffd5aa;
+        --fg-accent: #2e1100;
+      }
+
+      body.theme-light .palette.graphite {
+        --bg: #edf0ff;
+        --fg: #111231;
+        --panel: #ffffff;
+        --border: #d2d6f2;
+        --muted: #565c98;
+        --accent: #686cff;
+        --accent-soft: #dbdcff;
+        --accent-text: #2126b2;
+        --fg-accent: #0a0b33;
+      }
+
+      body.theme-dark .palette.graphite {
+        --bg: #06061a;
+        --fg: #f6f6ff;
+        --panel: #101134;
+        --border: #1b1c4c;
+        --muted: #a5a7e6;
+        --accent: #8c8fff;
+        --accent-soft: #1d1f52;
+        --accent-text: #dde0ff;
+        --fg-accent: #090924;
+      }
+
+      body.theme-light .palette.signal {
+        --bg: #ebf5ff;
+        --fg: #061628;
+        --panel: #ffffff;
+        --border: #cfe3fb;
+        --muted: #3d5b80;
+        --accent: #1c7cf6;
+        --accent-soft: #d6e6ff;
+        --accent-text: #073679;
+        --fg-accent: #03142c;
+      }
+
+      body.theme-dark .palette.signal {
+        --bg: #030d1a;
+        --fg: #eff6ff;
+        --panel: #05152b;
+        --border: #10284a;
+        --muted: #8fb5e3;
+        --accent: #4aa2ff;
+        --accent-soft: #0b294e;
+        --accent-text: #d6ecff;
+        --fg-accent: #02102a;
+      }
+
+      body.theme-light .palette.cerulean {
+        --bg: #e8fbff;
+        --fg: #062126;
+        --panel: #ffffff;
+        --border: #bee4ed;
+        --muted: #2a646f;
+        --accent: #0fb4d0;
+        --accent-soft: #c2f3ff;
+        --accent-text: #074854;
+        --fg-accent: #021f24;
+      }
+
+      body.theme-dark .palette.cerulean {
+        --bg: #021316;
+        --fg: #e7fdff;
+        --panel: #032125;
+        --border: #0e3740;
+        --muted: #88c8d4;
+        --accent: #36d9ff;
+        --accent-soft: #05323a;
+        --accent-text: #caf6ff;
+        --fg-accent: #010d10;
+      }
+
+      body.theme-light .palette.aurora {
+        --bg: #edf7f1;
+        --fg: #0a1b11;
+        --panel: #ffffff;
+        --border: #c9e1d4;
+        --muted: #436451;
+        --accent: #1fb46a;
+        --accent-soft: #c9f4de;
+        --accent-text: #0b4a2a;
+        --fg-accent: #062012;
+      }
+
+      body.theme-dark .palette.aurora {
+        --bg: #021309;
+        --fg: #e8fff2;
+        --panel: #062011;
+        --border: #103924;
+        --muted: #8bd7b0;
+        --accent: #43df8d;
+        --accent-soft: #09361f;
+        --accent-text: #d4ffe9;
+        --fg-accent: #010c06;
+      }
+
+      body.theme-light .palette.platinum {
+        --bg: #f4f4f7;
+        --fg: #11111b;
+        --panel: #ffffff;
+        --border: #d5d6e1;
+        --muted: #5b5c71;
+        --accent: #f04aa2;
+        --accent-soft: #ffd4eb;
+        --accent-text: #61123d;
+        --fg-accent: #230111;
+      }
+
+      body.theme-dark .palette.platinum {
+        --bg: #0e0f1b;
+        --fg: #fff4fb;
+        --panel: #17182b;
+        --border: #2a2b44;
+        --muted: #c2b8d8;
+        --accent: #ff6fc0;
+        --accent-soft: #2b1932;
+        --accent-text: #ffd9f0;
+        --fg-accent: #150614;
+      }
+    </style>
+  </head>
+  <body class="theme-light">
+    <main>
+      <header>
+        <p class="eyebrow">Troven · Mezo vault explorer</p>
+        <h1>Pick the brand direction</h1>
+        <p>
+          Six technical, serious DeFi palettes inspired by Ledger Live and
+          Fireblocks. Toggle light/dark and imagine how Troven feels in each.
+        </p>
+        <div class="controls">
+          <button id="themeToggle" type="button">Switch to dark</button>
+        </div>
+      </header>
+
+      <div class="palettes">
+        <section class="palette basalt" data-palette="basalt-circuit">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Tech · serious · trustworthy</p>
+              <h2>1. Basalt Circuit</h2>
+              <p>
+                Dense graphite layers with superconducting mint signals — great
+                for multi-sig trust cues and precision metrics.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#05070f">#05070F <span>bg-base</span></div>
+              <div class="swatch" style="background:#0b1220">#0B1220 <span>panel</span></div>
+              <div class="swatch" style="background:#1ed9b0;color:#041b15">#1ED9B0 <span>primary</span></div>
+              <div class="swatch" style="background:#103a2f">#103A2F <span>primary-soft</span></div>
+              <div class="swatch" style="background:#f2fbff;color:#071214">#F2FBFF <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Basalt sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette ledger" data-palette="ledger-alloy">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Premium · calm · tactile</p>
+              <h2>2. Ledger Alloy</h2>
+              <p>
+                Champagne neutrals with anodized orange signals for a
+                high-trust custody feel.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#fffaf3;color:#2c1a0a">#FFFAF3 <span>bg-base</span></div>
+              <div class="swatch" style="background:#f8f2eb;color:#311f0e">#F8F2EB <span>panel</span></div>
+              <div class="swatch" style="background:#ff9b40;color:#421b00">#FF9B40 <span>primary</span></div>
+              <div class="swatch" style="background:#4b2a16">#4B2A16 <span>primary-soft</span></div>
+              <div class="swatch" style="background:#1c1309">#1C1309 <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Ledger sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette graphite" data-palette="graphite-reserve">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Technical · precise</p>
+              <h2>3. Graphite Reserve</h2>
+              <p>
+                Navy foundations with calibrated violet cues — perfect for data
+                density and institutional dashboards.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#06061a">#06061A <span>bg-base</span></div>
+              <div class="swatch" style="background:#101134">#101134 <span>panel</span></div>
+              <div class="swatch" style="background:#686cff;color:#090a38">#686CFF <span>primary</span></div>
+              <div class="swatch" style="background:#1d1f52">#1D1F52 <span>primary-soft</span></div>
+              <div class="swatch" style="background:#f6f6ff;color:#090930">#F6F6FF <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Graphite sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette signal" data-palette="signal-vault">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Confident · modern</p>
+              <h2>4. Signal Vault</h2>
+              <p>
+                Mezo-blue gradients with electric sky highlights. Feels like a
+                live trading desk.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#030d1a">#030D1A <span>bg-base</span></div>
+              <div class="swatch" style="background:#05152b">#05152B <span>panel</span></div>
+              <div class="swatch" style="background:#1c7cf6">#1C7CF6 <span>primary</span></div>
+              <div class="swatch" style="background:#0b294e">#0B294E <span>primary-soft</span></div>
+              <div class="swatch" style="background:#eff6ff;color:#051734">#EFF6FF <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Signal sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette cerulean" data-palette="cerulean-relay">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Clean · analytical</p>
+              <h2>5. Cerulean Relay</h2>
+              <p>
+                Ultra-clear cyan energy with lab-grade neutrals. Reads like a
+                precision monitoring terminal.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#021316">#021316 <span>bg-base</span></div>
+              <div class="swatch" style="background:#032125">#032125 <span>panel</span></div>
+              <div class="swatch" style="background:#0fb4d0">#0FB4D0 <span>primary</span></div>
+              <div class="swatch" style="background:#05323a">#05323A <span>primary-soft</span></div>
+              <div class="swatch" style="background:#e7fdff;color:#02262c">#E7FDFF <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Cerulean sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette aurora" data-palette="aurora-node">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Secure · regenerative</p>
+              <h2>6. Aurora Node</h2>
+              <p>
+                Alpine greens referencing proof-of-reserve dashboards with
+                bio-luminescent accents.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#021309">#021309 <span>bg-base</span></div>
+              <div class="swatch" style="background:#062011">#062011 <span>panel</span></div>
+              <div class="swatch" style="background:#1fb46a">#1FB46A <span>primary</span></div>
+              <div class="swatch" style="background:#09361f">#09361F <span>primary-soft</span></div>
+              <div class="swatch" style="background:#e8fff2;color:#08311b">#E8FFF2 <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Aurora sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette platinum" data-palette="platinum-surge">
+          <div class="palette-header">
+            <div>
+              <p class="eyebrow">Premium · expressive</p>
+              <h2>7. Platinum Surge</h2>
+              <p>
+                Soft graphite shells with magenta charge lines for a bold yet
+                still-institutional signature.
+              </p>
+            </div>
+            <div class="swatches">
+              <div class="swatch" style="background:#0e0f1b">#0E0F1B <span>bg-base</span></div>
+              <div class="swatch" style="background:#17182b">#17182B <span>panel</span></div>
+              <div class="swatch" style="background:#f04aa2">#F04AA2 <span>primary</span></div>
+              <div class="swatch" style="background:#2b1932">#2B1932 <span>primary-soft</span></div>
+              <div class="swatch" style="background:#fff4fb;color:#3c0b25">#FFF4FB <span>fg-base</span></div>
+            </div>
+          </div>
+          <div class="wallet" role="group" aria-label="Platinum sample wallet">
+            <div class="wallet-header">
+              <div>
+                <p>Vault Balance</p>
+                <strong>1.48 BTC</strong>
+              </div>
+              <div class="badge">Mezo Testnet · BTC</div>
+            </div>
+            <div class="wallet-grid">
+              <div class="stat-card">
+                <p>Collateralization</p>
+                <strong>186%</strong>
+              </div>
+              <div class="stat-card">
+                <p>Available Credit</p>
+                <strong>24,500 MUSD</strong>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button">Adjust collateral</button>
+              <button class="secondary" type="button">Repay MUSD</button>
+              <button class="ghost" type="button">Transfer NFT</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const body = document.body;
+      const toggle = document.getElementById('themeToggle');
+      toggle.addEventListener('click', () => {
+        const next = body.classList.contains('theme-light')
+          ? 'theme-dark'
+          : 'theme-light';
+        body.classList.remove('theme-light', 'theme-dark');
+        body.classList.add(next);
+        toggle.textContent =
+          next === 'theme-light' ? 'Switch to dark' : 'Switch to light';
+      });
+    </script>
+  </body>
+</html>

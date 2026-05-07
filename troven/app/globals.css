@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --background: 233 100% 96%;
+  --foreground: 236 46% 13%;
+  --muted: 232 28% 60%;
+  --muted-foreground: 232 26% 35%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 236 46% 13%;
+  --card: 0 0% 100%;
+  --card-foreground: 236 46% 13%;
+  --border: 232 45% 86%;
+  --input: 232 45% 86%;
+  --primary: 239 100% 69%;
+  --primary-foreground: 236 61% 18%;
+  --secondary: 232 47% 92%;
+  --secondary-foreground: 236 46% 13%;
+  --accent: 214 86% 62%;
+  --accent-foreground: 237 58% 16%;
+  --destructive: 6 84% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 239 100% 69%;
+  --chart-1: 240 60% 60%;
+  --chart-2: 206 72% 50%;
+  --chart-3: 271 77% 65%;
+  --chart-4: 143 55% 45%;
+  --chart-5: 32 80% 60%;
+  --radius: 24px;
+  --font-sans: var(--font-sans-base, "Inter");
+  --font-mono: var(--font-mono-base, "JetBrains Mono");
+}
+
+.dark {
+  --background: 238 63% 5%;
+  --foreground: 248 54% 96%;
+  --muted: 234 28% 66%;
+  --muted-foreground: 234 18% 82%;
+  --popover: 236 51% 7%;
+  --popover-foreground: 248 54% 96%;
+  --card: 237 55% 8%;
+  --card-foreground: 248 54% 96%;
+  --border: 237 36% 22%;
+  --input: 237 36% 22%;
+  --primary: 245 94% 76%;
+  --primary-foreground: 249 72% 15%;
+  --secondary: 237 30% 18%;
+  --secondary-foreground: 249 54% 96%;
+  --accent: 215 88% 66%;
+  --accent-foreground: 247 70% 12%;
+  --destructive: 5 84% 52%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 245 94% 76%;
+  --chart-1: 245 89% 70%;
+  --chart-2: 202 86% 62%;
+  --chart-3: 285 75% 73%;
+  --chart-4: 151 61% 52%;
+  --chart-5: 36 86% 62%;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-ring: hsl(var(--ring));
+  --radius: var(--radius);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  min-height: 100vh;
+}

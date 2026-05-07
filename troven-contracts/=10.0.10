@@ -1,0 +1,7 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Progress: resolved 14, reused 4, downloaded 0, added 0
+Progress: resolved 15, reused 5, downloaded 1, added 0
+Progress: resolved 16, reused 7, downloaded 7, added 0
+ ERR_PNPM_INVALID_PACKAGE_NAME  Package name foundry-rs/forge-std#v1.9.4 is invalid, it should have a @scope
+
+This error happened while installing a direct dependency of /home/pauli/wspace/encode/mezo/troven/troven-contracts
