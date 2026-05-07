@@ -1,0 +1,11 @@
+# Ignore temporary and environment-specific files
+node_modules/
+.next/
+.vercel/
+.turbo/
+.env*
+dist/
+coverage/
+*.log
+*.tmp
+memory-bank/
